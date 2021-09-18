@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class Main {
 	
-	static int[][] graph = new int[10000][10000]; // exceed memory, give up.
+	static int[] graph = new int[10000];
 	public static void main(String[] argv) {
 		
 		Scanner sc = new Scanner(System.in);
@@ -13,7 +13,7 @@ public class Main {
 			int id = sc.nextInt();
 			int assignedTo = sc.nextInt();
 			
-			graph[id][assignedTo]=assignedTo;
+			graph[id]=assignedTo;
 			
 		}
 		
@@ -36,7 +36,7 @@ public class Main {
 		
 		int step = 0;
 		
-		int nextId = findAssignedTo(id1);
+		int nextId = graph[id1];
 		boolean found = false;
 		while (nextId!=0) {
 			if (nextId == id2) {
@@ -50,20 +50,11 @@ public class Main {
 				else return -1;
 			}
 			
-			nextId = findAssignedTo(nextId);
+			nextId = graph[nextId];
 		}
 		return -1;
 	}
 	
-	private static int findAssignedTo(int id) {
-		// TODO Auto-generated method stub
-		for (int i=0;i<10000;i++) {
-			if (graph[id][i]!=0) {
-				return graph[id][i];
-			}
-		}
-		return 0;
-	}
 
 }
 
