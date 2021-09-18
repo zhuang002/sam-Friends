@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class Main {
 	
-	static HashMap<Integer, Node> nodes = new HashMap<>();
+	static int[][] graph = new int[10000][10000]; // exceed memory, give up.
 	public static void main(String[] argv) {
 		
 		Scanner sc = new Scanner(System.in);
@@ -12,21 +12,8 @@ public class Main {
 		for (int i=0;i<n;i++) {
 			int id = sc.nextInt();
 			int assignedTo = sc.nextInt();
-			Node node1,node2;
-			if(nodes.containsKey(id)) {
-				node1 = nodes.get(id);
-			} else {
-				node1=new Node(id);
-				nodes.put(id, node1);
-			}
-			if(nodes.containsKey(assignedTo)) {
-				node2 = nodes.get(assignedTo);
-			} else {
-				node2=new Node(assignedTo);
-				nodes.put(assignedTo, node2);
-			}
 			
-			node1.assignedTo(node2);
+			graph[id][assignedTo]=assignedTo;
 			
 		}
 		
@@ -37,7 +24,7 @@ public class Main {
 			if (step==-1) {
 				System.out.println("No");
 			} else {
-				System.out.println("Yes,"+step);
+				System.out.println("Yes "+step);
 			}
 			id1 = sc.nextInt();
 			id2 = sc.nextInt();
@@ -48,40 +35,35 @@ public class Main {
 		// TODO Auto-generated method stub
 		
 		int step = 0;
-		Node current = nodes.get(id1);
-		boolean found = false;
 		
-		Node next = current.assignedTo;
-		while (next!=null) {
-			if (next.id != id2 && !found ) {
-				step++;
-			} else {
+		int nextId = findAssignedTo(id1);
+		boolean found = false;
+		while (nextId!=0) {
+			if (nextId == id2) {
 				found = true;
+			} else if (!found) {
+				step++;
+			} 
+			
+			if (nextId == id1) {
+				if (found) return step;
+				else return -1;
 			}
 			
-			if (next.id == id1) {
-				if (found)
-					return step;
-				else 
-					return -1;
-			}
-			next = next.assignedTo;
+			nextId = findAssignedTo(nextId);
 		}
-		
 		return -1;
 	}
+	
+	private static int findAssignedTo(int id) {
+		// TODO Auto-generated method stub
+		for (int i=0;i<10000;i++) {
+			if (graph[id][i]!=0) {
+				return graph[id][i];
+			}
+		}
+		return 0;
+	}
 
 }
 
-class Node {
-	int id;
-	Node assignedTo=null;
-	
-	public Node(int id) {
-		this.id = id;
-	}
-	
-	public void assignedTo(Node assignedTo) {
-		this.assignedTo = assignedTo;
-	}
-}
