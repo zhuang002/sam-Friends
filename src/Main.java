@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class Main {
 	
-	static int[] graph = new int[10000];
+	static HashMap<Integer,Integer> graph = new HashMap<>();
 	public static void main(String[] argv) {
 		
 		Scanner sc = new Scanner(System.in);
@@ -13,7 +13,7 @@ public class Main {
 			int id = sc.nextInt();
 			int assignedTo = sc.nextInt();
 			
-			graph[id]=assignedTo;
+			graph.put(id, assignedTo);
 			
 		}
 		
@@ -36,7 +36,7 @@ public class Main {
 		
 		int step = 0;
 		
-		int nextId = graph[id1];
+		int nextId = graph.get(id1);
 		boolean found = false;
 		while (nextId!=0) {
 			if (nextId == id2) {
@@ -50,7 +50,10 @@ public class Main {
 				else return -1;
 			}
 			
-			nextId = graph[nextId];
+			if (graph.containsKey(nextId))
+				nextId = graph.get(nextId);
+			else 
+				break;
 		}
 		return -1;
 	}
